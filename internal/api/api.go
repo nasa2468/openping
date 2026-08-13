@@ -1,6 +1,6 @@
 package api
 
-import ("encoding/csv"; "encoding/json"; "net/http"; "strconv"; "time"; "github.com/YOUR_USERNAME/openping/internal/storage"; "github.com/prometheus/client_golang/prometheus")
+import ("encoding/csv"; "encoding/json"; "net/http"; "strconv"; "time"; "github.com/nasa2468/openping/internal/storage"; "github.com/prometheus/client_golang/prometheus")
 
 type Server struct{Store *storage.Store}
 var checksTotal=prometheus.NewCounterVec(prometheus.CounterOpts{Name:"openping_checks_total",Help:"Total checks recorded by OpenPing."},[]string{"target","status"})
