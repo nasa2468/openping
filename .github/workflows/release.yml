@@ -1,0 +1,36 @@
+name: Release
+on:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: write
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - {os: linux, arch: amd64}
+          - {os: linux, arch: arm64}
+          - {os: darwin, arch: amd64}
+          - {os: darwin, arch: arm64}
+          - {os: windows, arch: amd64}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.23"
+      - name: Build
+        env:
+          GOOS: ${{ matrix.os }}
+          GOARCH: ${{ matrix.arch }}
+          CGO_ENABLED: "0"
+        run: |
+          mkdir -p dist
+          ext=""
+          if [ "$GOOS" = "windows" ]; then ext=".exe"; fi
+          go build -trimpath -ldflags="-s -w" -o "dist/openping-${GOOS}-${GOARCH}${ext}" ./cmd/openping
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openping-${{ matrix.os }}-${{ matrix.arch }}
+          path: dist/*
