@@ -1,0 +1,17 @@
+server:
+  address: ":8080"
+
+database: "data/openping.db"
+
+targets:
+  - name: OpenAI
+    type: http
+    address: https://openai.com
+    interval_seconds: 30
+    timeout_seconds: 10
+
+  - name: Cloudflare DNS
+    type: tcp
+    address: 1.1.1.1:53
+    interval_seconds: 30
+    timeout_seconds: 5
