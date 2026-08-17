@@ -4,6 +4,8 @@ Open-source uptime and network monitoring for developers, homelabs, and small te
 
 OpenPing periodically checks HTTP/HTTPS endpoints and TCP ports, stores historical results in SQLite, and provides a web dashboard with uptime, latency, incidents, and recent checks.
 
+> **Status:** Early-stage open-source project. Contributions and feedback are welcome.
+
 ## Features
 
 - HTTP/HTTPS monitoring
@@ -15,69 +17,43 @@ OpenPing periodically checks HTTP/HTTPS endpoints and TCP ports, stores historic
 - Prometheus metrics
 - Web dashboard
 - CSV export
-- Docker support
+- Docker and Docker Compose support
 - GitHub Actions CI
 - MIT License
 
-## Run on Windows
+## Requirements
 
-### Option 1: Run with Go
+- Go 1.23+ for source builds
+- Docker for containerized deployment
 
-1. Install Go 1.23 or newer from https://go.dev/dl/.
-2. Download this repository with **Code → Download ZIP**, then extract it.
-3. Open PowerShell in the extracted `openping` folder.
-4. Download dependencies:
+## Quick start
 
-```powershell
-go mod tidy
-```
-
-5. Start OpenPing:
-
-```powershell
-go run ./cmd/openping
-```
-
-6. Open **http://localhost:8080** in your browser.
-
-You should see the OpenPing dashboard. Keep the PowerShell window open while the server is running.
-
-> If local compilation reports that `gcc` is missing, use the Docker method below or install a C compiler/toolchain for Windows.
-
-### Option 2: Run with Docker
-
-1. Install Docker Desktop from https://www.docker.com/products/docker-desktop/.
-2. Open PowerShell in the OpenPing folder.
-3. Run:
-
-```powershell
-docker compose up -d --build
-```
-
-4. Open **http://localhost:8080**.
-
-To stop it:
-
-```powershell
-docker compose down
-```
-
-## Quick start on macOS / Linux
-
-Requirements: Go 1.23+
+### Go
 
 ```bash
 go mod tidy
 go run ./cmd/openping
 ```
 
-Open http://localhost:8080
+Open **http://localhost:8080**.
+
+### Docker Compose
+
+```bash
+docker compose up -d --build
+```
+
+Open **http://localhost:8080**.
+
+Stop the service with:
+
+```bash
+docker compose down
+```
 
 ## Configuration
 
 Edit `config.yaml`. Target `type` can be `http` or `tcp`.
-
-Example:
 
 ```yaml
 server:
@@ -103,21 +79,67 @@ After changing the configuration, restart OpenPing.
 
 ## API
 
-- `GET /api/targets`
-- `GET /api/recent?limit=100`
-- `GET /api/incidents`
-- `GET /api/export.csv`
-- `GET /metrics`
-- `GET /healthz`
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /api/targets` | List configured targets |
+| `GET /api/recent?limit=100` | Recent check results |
+| `GET /api/incidents` | Monitoring incidents |
+| `GET /api/export.csv` | Export monitoring history |
+| `GET /metrics` | Prometheus metrics |
+| `GET /healthz` | Health check |
+
+## Development
+
+Run the test suite:
+
+```bash
+go test ./...
+```
+
+Run tests with the race detector:
+
+```bash
+go test -race ./...
+```
+
+Run static analysis:
+
+```bash
+go vet ./...
+```
+
+Build the application:
+
+```bash
+go build ./cmd/openping
+```
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 
 ## Roadmap
 
-- Notifications
-- ICMP checks
-- Maintenance windows
-- Public status pages
-- TLS certificate expiry monitoring
-- Multi-node monitoring
+### Monitoring
+
+- [ ] ICMP checks
+- [ ] TLS certificate expiry monitoring
+- [ ] Maintenance windows
+
+### Notifications
+
+- [ ] Webhook notifications
+- [ ] Telegram / Discord notifications
+- [ ] Email notifications
+
+### Platform
+
+- [ ] Public status pages
+- [ ] Improved historical statistics
+- [ ] Multi-node monitoring
+- [ ] Automated cross-platform releases
+
+## Security
+
+Please see [SECURITY.md](SECURITY.md) for vulnerability reporting guidance.
 
 ## License
 
